@@ -101,9 +101,10 @@ class Formatter(object):
     def __getitem__(self, item):
         return self._config[item]
 
-    def format_unit(self, value, use_name=False):
+    def format_unit(self, value, use_name=False, force_plural=False):
         if use_name:
-            return value.format_name(self._format_unit)
+            return value.format_name(self._format_unit,
+                                     force_plural=force_plural)
         else:
             return value.format_unit(self._format_unit)
 
@@ -169,7 +170,7 @@ class Formatter(object):
     def _format_number(self, value):
         return self['value_format'] % value
 
-    def format(self, value, use_name=False):
+    def format(self, value, use_name=False, force_plural=False):
         """
         Return our string representation, normalized if applicable.
 
@@ -185,9 +186,11 @@ class Formatter(object):
             value = value.cast_unit(self['unit'])
 
         if not self['always_display_number'] and value.is_unit():
-            return self.format_unit(value, use_name=use_name)
+            return self.format_unit(value, use_name=use_name, force_plural=force_plural)
 
-        return self['indent'].join([self.format_number(value), self.format_unit(value, use_name=use_name)]).strip()
+        return self['indent'].join([self.format_number(value),
+                                    self.format_unit(value, use_name=use_name,
+                                                     force_plural=force_plural)]).strip()
 
     __call__ = format
 
@@ -255,6 +258,10 @@ class Unum(object):
             result.simplify_unit()
 
         return result
+
+    def name(self, plural=True):
+        return self.unit().formatter.format(self, use_name=True,
+                                            force_plural=plural)
 
     @uniform_unum
     def cast_unit(self, other):
@@ -418,8 +425,9 @@ class Unum(object):
     def format_unit(self, func):
         return func(self._unit)
 
-    def format_name(self, func):
-        return func(self._unit, use_name=True, value_is_one=self._value == 1)
+    def format_name(self, func, force_plural=False):
+        return func(self._unit, use_name=True,
+                    value_is_one=(self._value == 1) and not force_plural)
 
     @uniform_unum
     def __add__(self, other):
@@ -592,10 +600,7 @@ class Unum(object):
         return self.formatter.format(self)
 
     def __repr__(self):
-        if self.formatter['name_for_repr']:
-            return self.formatter.format(self, use_name=True)
-        else:
-            return str(self)
+        return self.formatter.format(self, use_name=self.formatter['name_for_repr'])
 
     def __getstate__(self):
         return self._value, self._unit.copy(), self._normal
