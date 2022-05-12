@@ -259,9 +259,9 @@ class Unum(object):
 
         return result
 
-    def name(self, plural=True):
-        return self.unit().formatter.format(self, use_name=True,
-                                            force_plural=plural)
+    def unit_name(self, plural=True):
+        return self.formatter.format(self.unit(), use_name=True,
+                                     force_plural=plural)
 
     @uniform_unum
     def cast_unit(self, other):
