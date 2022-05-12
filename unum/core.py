@@ -3,12 +3,13 @@ from __future__ import division, unicode_literals
 import collections
 
 import six
+import inflect
 
 from .exceptions import *
 
 BASIC_UNIT = 0
 
-UnitDefinition = collections.namedtuple('UnitDefinition', ['definition', 'level', 'name'])
+UnitDefinition = collections.namedtuple('UnitDefinition', ['definition', 'level', 'name', 'plural'])
 
 
 class UnitTable(dict):
@@ -39,7 +40,10 @@ class UnitTable(dict):
             equivalent._normal = True
             level = equivalent.max_level() + 1
 
-        self[symbol] = UnitDefinition(equivalent, level, name)
+        p = inflect.engine()
+        plural = p.plural(name)
+
+        self[symbol] = UnitDefinition(equivalent, level, name, plural)
 
         return Unum(1, {symbol: 1}, normal=True)
 
@@ -72,6 +76,8 @@ class Formatter(object):
         div_separator='/',
         unit_format='[%s]',
         value_format='%s',
+        name_format='%s',
+        name_for_repr=False,
         indent=' ',
         unitless='[-]',
         auto_norm=False,
@@ -95,10 +101,13 @@ class Formatter(object):
     def __getitem__(self, item):
         return self._config[item]
 
-    def format_unit(self, value):
-        return value.format_unit(self._format_unit)
+    def format_unit(self, value, use_name=False):
+        if use_name:
+            return value.format_name(self._format_unit)
+        else:
+            return value.format_unit(self._format_unit)
 
-    def _format_unit(self, unit):
+    def _format_unit(self, unit, use_name=False, value_is_one=False):
         """
         Return a string representation of our unit.
         """
@@ -106,19 +115,41 @@ class Formatter(object):
         units = sorted(unit.items())
 
         formatted = (
-            self._format_only_mul_separator(units) if not self['div_separator'] else
-            self._format_with_div_separator(units)
+            self._format_only_mul_separator(units, use_name, value_is_one) if not self['div_separator'] else
+            self._format_with_div_separator(units, use_name, value_is_one)
         )
+        if use_name:
+            return self['unitless'] if not formatted else self['name_format'] % formatted
+        else:
+            return self['unitless'] if not formatted else self['unit_format'] % formatted
 
-        return self['unitless'] if not formatted else self['unit_format'] % formatted
+    def _format_only_mul_separator(self, units, use_name=False, value_is_one=False):
+        if use_name:
+            unit_list = [(u, exp) for u, exp in units]
+            name_unit_list = [(UNIT_TABLE[u].name, exp) for u, exp in unit_list]
+            if not value_is_one:
+                name_unit_list[-1] = (UNIT_TABLE[unit_list[-1][0]].plural,
+                                      name_unit_list[-1][1])
+        else:
+            name_unit_list = [(u, exp) for u, exp in units]
 
-    def _format_only_mul_separator(self, units):
-        return self['mul_separator'].join(self._format_exponent(u, exp) for u, exp in units)
+        return self['mul_separator'].join(self._format_exponent(u, exp) for u, exp in name_unit_list)
 
-    def _format_with_div_separator(self, units):
+    def _format_with_div_separator(self, units, use_name=False, value_is_one=False):
+        if use_name:
+            unit_list = [(u, exp) for u, exp in units]
+            name_unit_list = [(UNIT_TABLE[u].name, exp) for u, exp in unit_list]
+        else:
+            unit_list = name_unit_list = [(u, exp) for u, exp in units]
+
+        numerator = [(u, exp) for u, exp in name_unit_list if exp > 0]
+        if len(numerator) != 0 and use_name and not value_is_one:
+            numerator_units = [(u, exp) for u, exp in unit_list if exp > 0]
+            numerator[-1] = (UNIT_TABLE[numerator_units[-1][0]].plural, numerator[-1][1])
+
         return self['div_separator'].join([
-            self['mul_separator'].join(self._format_exponent(u, exp) for u, exp in units if exp > 0) or '1',
-            self['mul_separator'].join(self._format_exponent(u, -exp) for u, exp in units if exp < 0)
+            self['mul_separator'].join(self._format_exponent(u, exp) for u, exp in numerator) or '1',
+            self['mul_separator'].join(self._format_exponent(u, -exp) for u, exp in name_unit_list if exp < 0)
         ]).rstrip(self['div_separator'] + '1')
 
     def _format_exponent(self, symbol, exp):
@@ -138,7 +169,7 @@ class Formatter(object):
     def _format_number(self, value):
         return self['value_format'] % value
 
-    def format(self, value):
+    def format(self, value, use_name=False):
         """
         Return our string representation, normalized if applicable.
 
@@ -154,9 +185,9 @@ class Formatter(object):
             value = value.cast_unit(self['unit'])
 
         if not self['always_display_number'] and value.is_unit():
-            return self.format_unit(value)
+            return self.format_unit(value, use_name=use_name)
 
-        return self['indent'].join([self.format_number(value), self.format_unit(value)]).strip()
+        return self['indent'].join([self.format_number(value), self.format_unit(value, use_name=use_name)]).strip()
 
     __call__ = format
 
@@ -387,6 +418,9 @@ class Unum(object):
     def format_unit(self, func):
         return func(self._unit)
 
+    def format_name(self, func):
+        return func(self._unit, use_name=True, value_is_one=self._value == 1)
+
     @uniform_unum
     def __add__(self, other):
         s, o = self.match_units(other)
@@ -557,7 +591,11 @@ class Unum(object):
     def __str__(self):
         return self.formatter.format(self)
 
-    __repr__ = __str__
+    def __repr__(self):
+        if self.formatter['name_for_repr']:
+            return self.formatter.format(self, use_name=True)
+        else:
+            return str(self)
 
     def __getstate__(self):
         return self._value, self._unit.copy(), self._normal
