@@ -13,15 +13,18 @@ setup(
     url="https://github.com/trzemecki/Unum",
     license="LGPL",
     install_requires=[
-        'six'
+        'six',
+        'inflect',
     ],
     test_suite="tests",
-    packages=(
+    packages=[
         'unum',
         'unum.units',
         'unum.units.custom',
         'unum.units.others',
         'unum.units.si',
+        'unum.units.imp_UK',
+        'unum.units.US_Customary',
         'tests',
-    )
+    ]
 )
