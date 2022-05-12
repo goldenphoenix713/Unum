@@ -24,6 +24,11 @@ setup(
         'unum.units.others',
         'unum.units.si',
         'unum.units.imp_UK',
+        'unum.units.imp_UK.Apothecaries',
+        'unum.units.imp_UK.avoirdupois',
+        'unum.units.imp_UK.metric',
+        'unum.units.imp_UK.troy',
+        'unum.units.imp_UK.troy.mint',
         'unum.units.US_Customary',
         'tests',
     ]
