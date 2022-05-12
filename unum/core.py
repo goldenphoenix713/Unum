@@ -13,6 +13,8 @@ UnitDefinition = collections.namedtuple('UnitDefinition', ['definition', 'level'
 
 
 class UnitTable(dict):
+    _engine = inflect.engine()
+
     def reset(self, table=None):
         self.clear()
 
@@ -28,7 +30,7 @@ class UnitTable(dict):
     def is_derived(self, symbol):
         return not self.is_basic(symbol)
 
-    def new_unit(self, symbol, definition=BASIC_UNIT, name=''):
+    def new_unit(self, symbol, definition=BASIC_UNIT, name='', plural=None):
         if symbol in self:
             raise NameConflictError(symbol)
 
@@ -40,8 +42,10 @@ class UnitTable(dict):
             equivalent._normal = True
             level = equivalent.max_level() + 1
 
-        p = inflect.engine()
-        plural = p.plural(name)
+        if plural is None:
+            plural = self._engine.plural(name)
+        else:
+            plural = plural
 
         self[symbol] = UnitDefinition(equivalent, level, name, plural)
 
