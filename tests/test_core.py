@@ -83,7 +83,9 @@ class UnumTest(unittest.TestCase):
 
         self.assertEqual(Fraction(1, 2) * km, result)
 
-    def test_Multiplying_NumpyArrayByUnit_ReturnNumpyArrayWithNumbersWithUnit(self):
+    def test_Multiplying_NumpyArrayByUnit_ReturnNumpyArrayWithNumbersWithUnit(
+            self
+    ):
         result = numpy.array([2, 3, 4]) * ns
 
         self.assertIsInstance(result, numpy.ndarray)
@@ -139,10 +141,12 @@ class UnumTest(unittest.TestCase):
 
         self.assertEqual(unitless, value.unit())
 
-    def test_SimplifyUnit_NamedDimensionlessUnitForDisplay_ReturnWithUnit(self):
+    def test_SimplifyUnit_NamedDimensionlessUnitForDisplay_ReturnWithUnit(
+            self
+    ):
         value = as_unum(10 * rad)
 
-        value.simplify_unit(forDisplay=True)
+        value.simplify_unit(for_display=True)
 
         self.assertEqual(rad, value.unit())
 
@@ -160,38 +164,44 @@ class UnumTest(unittest.TestCase):
 
         self.assertEqual(unitless, value.unit())
 
-    def test_Equal_DifferentUnits_ReturnFalse(self):
-        a = 5 * m
-        b = 4 * K
+    @staticmethod
+    def test_Equal_DifferentUnits_ReturnFalse():
+        aa = 5 * m
+        bb = 4 * K
 
-        assert not a == b
+        assert not aa == bb
 
-    def test_Equal_WithNone_ReturnFalse(self):
+    @staticmethod
+    def test_Equal_WithNone_ReturnFalse():
         value = 5 * m
 
-        assert not value == None
+        assert value is not None
 
-    def test_NotEqual_DifferentUnits_ReturnTrue(self):
-        a = 5 * K
-        b = 4 * m
+    @staticmethod
+    def test_NotEqual_DifferentUnits_ReturnTrue():
+        aa = 5 * K
+        bb = 4 * m
 
-        assert a != b
+        assert aa != bb
 
-    def test_NotEqual_WithNone_ReturnTrue(self):
-        a = 5 * K
-        b = None
+    @staticmethod
+    def test_NotEqual_WithNone_ReturnTrue():
+        aa = 5 * K
+        bb = None
 
-        assert a != b
+        assert aa != bb
 
-    def test_Bool_ZeroValue_ReturnFalse(self):
-        a = 0. * K
+    @staticmethod
+    def test_Bool_ZeroValue_ReturnFalse():
+        aa = 0. * K
 
-        assert not a
+        assert not aa
 
-    def test_Bool_NonZeroValue_ReturnTrue(self):
-        a = 5 * K
+    @staticmethod
+    def test_Bool_NonZeroValue_ReturnTrue():
+        aa = 5 * K
 
-        assert a
+        assert aa
 
     @classmethod
     def setUpClass(cls):
@@ -314,8 +324,10 @@ class FormatterTest(unittest.TestCase):
         result = formatter.format(value)
 
         self.assertEqual('120.0 [cm]', result)
-        
-    def test_Format_UseSuperscript_ReplaceNumbersInUnitsByUnicodeSuperscript(self):
+
+    def test_Format_UseSuperscript_ReplaceNumbersInUnitsByUnicodeSuperscript(
+            self
+    ):
         formatter = self.create(superscript=True)
         value = 1.4 * m ** 2
 

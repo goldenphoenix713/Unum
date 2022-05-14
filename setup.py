@@ -16,6 +16,12 @@ setup(
         'six',
         'inflect',
     ],
+    test_requires=[
+        'numpy'
+    ],
+    extras_require=[
+        'numpy'
+    ],
     test_suite="tests",
     packages=[
         'unum',

@@ -1,4 +1,5 @@
-from __future__ import print_function, absolute_import, division, unicode_literals
+from __future__ import (print_function, absolute_import,
+                        division, unicode_literals)
 
 import unittest
 
@@ -30,7 +31,9 @@ class ModuleTest(unittest.TestCase):
 
         self.assertIs(actual, value)
 
-    def test_AsUnum_FloatValueAndUnitGiven_ReturnUnumWithGivenNumberAndUnit(self):
+    def test_AsUnum_FloatValueAndUnitGiven_ReturnUnumWithGivenNumberAndUnit(
+            self
+    ):
         value = 12.3
 
         actual = self.as_unum(value, m)
@@ -92,7 +95,7 @@ class ModuleTest(unittest.TestCase):
 
         self.assertAlmostEqual(2.3, actual)
 
-    def test_AsNumber_UnumWithDifferentUnit_ReturnUnumValueWithAfterCastingToOtherUnit(self):
+    def test_AsNumber_UnumWithDifferentUnit_ReturnUnumValueAfterCasting(self):
         value = 2.3 * m
 
         actual = self.as_number(value, cm)
@@ -137,14 +140,16 @@ class ModuleTest(unittest.TestCase):
         with self.assertRaises(unum.exceptions.IncompatibleUnitsError):
             _ = self.as_number(value, Pa, MPa)
 
-    def test_AsNumber_FloatWith2CompatibleUnits_ReturnValueMultipliedByConversionCoefficientFromFirstUnitToSecond(self):
+    def test_AsNumber_FloatWithCompatibleUnits_ReturnValueCoefficientConverted(
+            self
+    ):
         value = 2.3
 
         actual = self.as_number(value, m, cm)
 
         self.assertAlmostEqual(230., actual)
 
-    def test_AsNumber_FloatWith2IncompatibleUnits_Thorws(self):
+    def test_AsNumber_FloatWith2IncompatibleUnits_Throws(self):
         value = 2.3
 
         with self.assertRaises(unum.exceptions.IncompatibleUnitsError):
@@ -178,7 +183,9 @@ class ModuleTest(unittest.TestCase):
 
         self.assertIsNotNone(actual)
 
-    def test_Decode_EncodedUnumGiven_ReturnUnumEqualToValueBeforeEncoding(self):
+    def test_Decode_EncodedUnumGiven_ReturnUnumEqualToValueBeforeEncoding(
+            self
+    ):
         value = 123.3 * m
         encoded = self.encode(value)
         value *= 3 * s  # prevent to storing any encoded value info

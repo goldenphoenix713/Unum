@@ -49,7 +49,7 @@ def as_unit(value):
 
 def as_number(value, *args, **kwargs):
     """
-    Using:
+    Use:
     as_number(value, [places=])
     as_number(value, to_unit, [places=])
     as_number(value, from_unit, to_unit, [places=])

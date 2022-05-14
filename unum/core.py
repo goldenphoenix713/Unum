@@ -9,7 +9,10 @@ from .exceptions import *
 
 BASIC_UNIT = 0
 
-UnitDefinition = collections.namedtuple('UnitDefinition', ['definition', 'level', 'name', 'plural'])
+UnitDefinition = collections.namedtuple(
+    'UnitDefinition',
+    ['definition', 'level', 'name', 'plural']
+)
 
 
 class UnitTable(dict):
@@ -84,8 +87,7 @@ class Formatter(object):
         name_for_repr=False,
         indent=' ',
         unitless='[-]',
-        auto_norm=False,
-        unit=None,
+        auto_norm=True,
         superscript=True,
         always_display_number=False,
     )
@@ -98,7 +100,8 @@ class Formatter(object):
         not_allowed_keywords = set(kwargs) - set(self._config)
 
         if not_allowed_keywords:
-            raise TypeError("Not allowed keywords: %s" % ', '.join(not_allowed_keywords))
+            raise KeyError("The following keywords are not allowed: "
+                           "%s" % ', '.join(not_allowed_keywords))
 
         self._config.update(kwargs)
 
@@ -120,41 +123,48 @@ class Formatter(object):
         units = sorted(unit.items())
 
         formatted = (
-            self._format_only_mul_separator(units, use_name, value_is_one) if not self['div_separator'] else
+            self._format_only_mul_separator(units, use_name, value_is_one)
+            if not self['div_separator'] else
             self._format_with_div_separator(units, use_name, value_is_one)
         )
-        if use_name:
-            return self['unitless'] if not formatted else self['name_format'] % formatted
-        else:
-            return self['unitless'] if not formatted else self['unit_format'] % formatted
+        return (self['unitless'] if not formatted else
+                self['name_format' if use_name else 'unit_format'] % formatted)
 
-    def _format_only_mul_separator(self, units, use_name=False, value_is_one=False):
+    def _format_only_mul_separator(self, units, use_name=False,
+                                   value_is_one=False):
         if use_name:
             unit_list = [(u, exp) for u, exp in units]
-            name_unit_list = [(UNIT_TABLE[u].name, exp) for u, exp in unit_list]
+            name_unit_list = [(UNIT_TABLE[u].name, exp)
+                              for u, exp in unit_list]
             if not value_is_one:
                 name_unit_list[-1] = (UNIT_TABLE[unit_list[-1][0]].plural,
                                       name_unit_list[-1][1])
         else:
             name_unit_list = [(u, exp) for u, exp in units]
 
-        return self['mul_separator'].join(self._format_exponent(u, exp) for u, exp in name_unit_list)
+        return self['mul_separator'].join(self._format_exponent(u, exp)
+                                          for u, exp in name_unit_list)
 
-    def _format_with_div_separator(self, units, use_name=False, value_is_one=False):
+    def _format_with_div_separator(self, units, use_name=False,
+                                   value_is_one=False):
         if use_name:
             unit_list = [(u, exp) for u, exp in units]
-            name_unit_list = [(UNIT_TABLE[u].name, exp) for u, exp in unit_list]
+            name_unit_list = [(UNIT_TABLE[u].name, exp)
+                              for u, exp in unit_list]
         else:
             unit_list = name_unit_list = [(u, exp) for u, exp in units]
 
         numerator = [(u, exp) for u, exp in name_unit_list if exp > 0]
         if len(numerator) != 0 and use_name and not value_is_one:
             numerator_units = [(u, exp) for u, exp in unit_list if exp > 0]
-            numerator[-1] = (UNIT_TABLE[numerator_units[-1][0]].plural, numerator[-1][1])
+            numerator[-1] = (UNIT_TABLE[numerator_units[-1][0]].plural,
+                             numerator[-1][1])
 
         return self['div_separator'].join([
-            self['mul_separator'].join(self._format_exponent(u, exp) for u, exp in numerator) or '1',
-            self['mul_separator'].join(self._format_exponent(u, -exp) for u, exp in name_unit_list if exp < 0)
+            self['mul_separator'].join(self._format_exponent(u, exp)
+                                       for u, exp in numerator) or '1',
+            self['mul_separator'].join(self._format_exponent(u, -exp)
+                                       for u, exp in name_unit_list if exp < 0)
         ]).rstrip(self['div_separator'] + '1')
 
     def _format_exponent(self, symbol, exp):
@@ -162,7 +172,8 @@ class Formatter(object):
             exp_text = six.text_type(exp)
 
             if self['superscript']:
-                exp_text = ''.join([_SUPERSCRIPT_NUMBERS.get(c, c) for c in exp_text])
+                exp_text = ''.join([_SUPERSCRIPT_NUMBERS.get(c, c)
+                                    for c in exp_text])
         else:
             exp_text = ''
 
@@ -186,15 +197,15 @@ class Formatter(object):
             value.simplify_unit(True)
             value._normal = True
 
-        if self['unit'] is not None:
-            value = value.cast_unit(self['unit'])
-
         if not self['always_display_number'] and value.is_unit():
-            return self.format_unit(value, use_name=use_name, force_plural=force_plural)
+            return self.format_unit(value, use_name=use_name,
+                                    force_plural=force_plural)
 
-        return self['indent'].join([self.format_number(value),
-                                    self.format_unit(value, use_name=use_name,
-                                                     force_plural=force_plural)]).strip()
+        return self['indent'].join(
+            [self.format_number(value),
+             self.format_unit(value, use_name=use_name,
+                              force_plural=force_plural)]
+        ).strip()
 
     __call__ = format
 
@@ -240,8 +251,10 @@ class Unum(object):
 
     def __init__(self, value, unit=None, normal=False):
         """
-        :param value: number or other object represents the mathematical value (e.g. numpy array)
-        :param dict unit: {unit symbol : exponent} for example for 1 m/s2 should give {'m': 1, 's': -2}
+        :param value: number or other object represents the mathematical
+             value (e.g. numpy array)
+        :param dict unit: {unit symbol : exponent} for example for 1 m/s2
+            should give {'m': 1, 's': -2}
         """
 
         self._value = value
@@ -272,8 +285,8 @@ class Unum(object):
         """
         Return a Unum with this Unum's value and the units of the given Unum.
 
-        Raises IncompatibleUnitsError if self can't be converted to other.
-        Raises NonBasicUnitError if other isn't a basic unit.
+        Raises IncompatibleUnitsError if 'self' can't be converted to 'other'.
+        Raises NonBasicUnitError if 'other' isn't a basic unit.
         """
 
         if not other.is_basic():
@@ -303,18 +316,17 @@ class Unum(object):
         del res._unit[symbol]
         return res
 
-    def simplify_unit(self, forDisplay=False):
+    def simplify_unit(self, for_display=False):
         """
         Normalize our units IN PLACE and return self.
 
         Substitutions may be applied to reduce the number of different units,
         while making the fewest substitutions.
 
-        If forDisplay is True, then prefer a single unit to no unit.
+        If for_display is True, then prefer a single unit to no unit.
         """
 
-        # TODO: example of forDisplay.
-        # TODO: simplify normalize so it fits in 80 columns...
+        # TODO: example of for_display.
 
         previous_length = len(self._unit)
         new_subst_unums = [({}, self.copy())]
@@ -322,30 +334,38 @@ class Unum(object):
         while new_subst_unums:
             subst_unums, new_subst_unums = new_subst_unums, []
             for subst_dict, subst_unum in subst_unums:
-                for symbol, exponent in subst_unum._derived_units():
+                for symbol, exponent in subst_unum.derived_units():
                     new_subst_dict = subst_dict.copy()
-                    new_subst_dict[symbol] = exponent + new_subst_dict.get(symbol, 0)
+                    new_subst_dict[symbol] = (exponent
+                                              + new_subst_dict.get(symbol, 0))
 
-                    if all(new_subst_dict != subst_dict2 for subst_dict2, subst_unum2 in new_subst_unums):
-                        reduced = subst_unum.replaced(symbol, UNIT_TABLE.get_definition(symbol)) # replace by definition
+                    if all(new_subst_dict != subst_dict2
+                           for subst_dict2, subst_unum2 in new_subst_unums):
+                        reduced = subst_unum.replaced(
+                            symbol, UNIT_TABLE.get_definition(symbol)
+                        )  # replace by definition
                         new_subst_unums.append((new_subst_dict, reduced))
 
                         new_length = len(reduced._unit)
-                        if new_length < previous_length and not (forDisplay and new_length == 0 and previous_length == 1):
-                            self._value, self._unit = reduced._value, reduced._unit
+                        if (new_length < previous_length
+                                and not (for_display and new_length == 0
+                                         and previous_length == 1)):
+                            self._value = reduced._value
+                            self._unit = reduced._unit
                             previous_length = new_length
         return self
 
-    def _derived_units(self):
-        return [(symbol, self._unit[symbol]) for symbol in self._unit if UNIT_TABLE.is_derived(symbol)]
+    def derived_units(self):
+        return [(symbol, self._unit[symbol]) for symbol in self._unit
+                if UNIT_TABLE.is_derived(symbol)]
 
-    def assert_no_unit(self):
+    def assert_unitless(self):
         """
         :raises ShouldBeUnitlessError: if self has a unit
         """
-
         if self._unit:
-            raise ShouldBeUnitlessError(self)  # TODO consider other way to signalize it
+            # TODO consider other way to signalize this
+            raise ShouldBeUnitlessError(self)
 
     def max_level(self):
         """
@@ -376,7 +396,7 @@ class Unum(object):
             return s._value / o._value
         else:
             s = self.copy(True)
-            s.assert_no_unit()
+            s.assert_unitless()
             return s._value / unit
 
     def match_units(self, other):
@@ -500,7 +520,7 @@ class Unum(object):
     def __pow__(self, other):
         if other._value:
             other = other.copy(True)
-            other.assert_no_unit()
+            other.assert_unitless()
             unit = self._unit.copy()
             for u in list(self._unit.keys()):
                 unit[u] *= other._value
@@ -604,7 +624,8 @@ class Unum(object):
         return self.formatter.format(self)
 
     def __repr__(self):
-        return self.formatter.format(self, use_name=self.formatter['name_for_repr'])
+        return self.formatter.format(self,
+                                     use_name=self.formatter['name_for_repr'])
 
     def __getstate__(self):
         return self._value, self._unit.copy(), self._normal

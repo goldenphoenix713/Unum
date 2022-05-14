@@ -43,11 +43,13 @@ class ApothecaryTests(unittest.TestCase):
     def test_ap_minim(self):
         from unum.units.others import L
         from unum.units.imp_UK.Apothecaries import min_ap
-        self.assertAlmostEqual(0.0000591938802083, min_ap.cast_unit(L).number(), 5)
+        self.assertAlmostEqual(0.0000591938802083,
+                               min_ap.cast_unit(L).number(), 5)
 
     def test_ap_fl_dram(self):
         from unum.units.imp_UK.Apothecaries import fl_dr_ap
-        self.assertAlmostEqual(3.5516328125, fl_dr_ap.cast_unit(cm ** 3).number(), 5)
+        self.assertAlmostEqual(3.5516328125,
+                               fl_dr_ap.cast_unit(cm ** 3).number(), 5)
 
     def test_ap_dram_SI(self):
         from unum.units.imp_UK.Apothecaries import dr_ap
@@ -78,7 +80,6 @@ class AvoirdupoisTests(unittest.TestCase):
     def test_dram(self):
         from unum.units.imp_UK.avoirdupois import grain
         from unum.units.imp_UK import dr
-        # warn("Test definition not precise enough!") #fixed through addition of SI test
         self.assertAlmostEqual(27.34, dr.cast_unit(grain).number(), 2)
 
     def test_dram_SI(self):
@@ -119,13 +120,18 @@ class TroyTest(unittest.TestCase):
     def test_ounce(self):
         from unum.units.imp_UK.troy import oz_t
         from unum.units import g
-        self.assertAlmostEqual(31.1034768, oz_t.cast_unit(g).number(), 7)  # float causes inacuracies
+        # float causes inaccuracies
+        self.assertAlmostEqual(31.1034768, oz_t.cast_unit(g).number(), 7)
 
     # def test_ounce_dec(self):
-    #     self.assertEqual(dec("31.1034768"), as_unum(dec(1), oz_t).cast_unit(g).number())  # float causes inacuracies
+    #     #  float causes inaccuracies
+    #     self.assertEqual(dec("31.1034768"), as_unum(dec(1), oz_t)
+    #                      .cast_unit(g).number())
     #
     # def test_ounce_dec2(self):
-    #     self.assertEqual(dec("31.1034768"), oz_t.cast_unit(g).number())  # float causes inacuracies
+    #     # float causes inaccuracies
+    #     self.assertEqual(dec("31.1034768"), oz_t.cast_unit(g).number())
+
     def test_pennyweight(self):
         from unum.units.imp_UK.troy import pwt
         from unum.units import g
@@ -138,14 +144,19 @@ class TroyTest(unittest.TestCase):
 
 
 class MintTests(unittest.TestCase):
-    def test_mite(self):
+
+    @staticmethod
+    def test_mite():
         warn(TestPrecisionWarning())
 
-    def test_blank(self):
+    @staticmethod
+    def test_blank():
         warn(TestPrecisionWarning())
 
-    def test_droit(self):
+    @staticmethod
+    def test_droit():
         warn(TestPrecisionWarning())
 
-    def test_perit(self):
+    @staticmethod
+    def test_perit():
         warn(TestPrecisionWarning())

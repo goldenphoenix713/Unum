@@ -5,21 +5,27 @@ Source : http://physics.nist.gov/cuu/Units/units.html)
 from unum.core import new_unit
 
 __all__ = [
-    'A', 'AA', 'ACD', 'AG', 'AK', 'AM', 'AMOL', 'CA', 'CCD', 'CD', 'CG', 'CK', 'CM', 'CMOL', 'DA', 'DAA', 'DACD',
-    'DAG', 'DAK', 'DAM', 'DAMOL', 'DCD', 'DG', 'DK', 'DM', 'DMOL', 'EA', 'ECD', 'EG', 'EK', 'EM', 'EMOL', 'Ecd',
-    'Eg', 'Em', 'Emol', 'Es', 'FA', 'FCD', 'FG', 'FK', 'FM', 'FMOL', 'GA', 'GCD', 'GG', 'GK', 'GM', 'GMOL',
-    'Gcd', 'Gg', 'Gm', 'Gmol', 'Gs', 'HA', 'HCD', 'HG', 'HK', 'HM', 'HMOL', 'K', 'KA', 'KCD', 'KG', 'KK', 'KM',
-    'KMOL', 'M', 'MA', 'MCD', 'MG', 'MK', 'MM', 'MMOL', 'MOL', 'Mcd', 'Mg', 'Mm', 'Mmol', 'Ms', 'NA', 'NCD',
-    'NG', 'NK', 'NM', 'NMOL', 'PA', 'PCD', 'PG', 'PK', 'PM', 'PMOL', 'Pcd', 'Pg', 'Pm', 'Pmol', 'Ps', 'TA',
-    'TCD', 'TG', 'TK', 'TM', 'TMOL', 'Tcd', 'Tg', 'Tm', 'Tmol', 'Ts', 'UA', 'UCD', 'UG', 'UK', 'UM', 'UMOL',
-    'YA', 'YCD', 'YG', 'YK', 'YM', 'YMOL', 'Ycd', 'Yg', 'Ym', 'Ymol', 'Ys', 'ZA', 'ZCD', 'ZG', 'ZK', 'ZM',
-    'ZMOL', 'Zcd', 'Zg', 'Zm', 'Zmol', 'Zs', 'aA', 'aK', 'acd', 'ag', 'am', 'amol', 'cA', 'cK', 'ccd', 'cd',
-    'cg', 'cm', 'cmol', 'cs', 'dA', 'dK', 'daA', 'daK', 'dacd', 'dag', 'dam', 'damol', 'das', 'dcd', 'dg', 'dm',
-    'dmol', 'ds', 'fA', 'fK', 'fcd', 'fg', 'fm', 'fmol', 'fs', 'g', 'hA', 'hK', 'hcd', 'hg', 'hm', 'hmol', 'hs',
-    'kA', 'kK', 'kcd', 'kg', 'km', 'kmol', 'ks', 'm', 'mA', 'mK', 'mcd', 'mg', 'mm', 'mmol', 'mol', 'ms', 'nA',
-    'nK', 'ncd', 'ng', 'nm', 'nmol', 'ns', 'pA', 'pK', 'pcd', 'pg', 'pm', 'pmol', 'ps', 's', 'uA', 'uK', 'ucd',
-    'ug', 'um', 'umol', 'us', 'yA', 'yK', 'ycd', 'yg', 'ym', 'ymol', 'ys', 'zA', 'zK', 'zcd', 'zg', 'zm', 'zmol',
-    'zs'
+    'A', 'AA', 'ACD', 'AG', 'AK', 'AM', 'AMOL', 'CA', 'CCD', 'CD', 'CG', 'CK',
+    'CM', 'CMOL', 'DA', 'DAA', 'DACD', 'DAG', 'DAK', 'DAM', 'DAMOL', 'DCD',
+    'DG', 'DK', 'DM', 'DMOL', 'EA', 'ECD', 'EG', 'EK', 'EM', 'EMOL', 'Ecd',
+    'Eg', 'Em', 'Emol', 'Es', 'FA', 'FCD', 'FG', 'FK', 'FM', 'FMOL', 'GA',
+    'GCD', 'GG', 'GK', 'GM', 'GMOL', 'Gcd', 'Gg', 'Gm', 'Gmol', 'Gs', 'HA',
+    'HCD', 'HG', 'HK', 'HM', 'HMOL', 'K', 'KA', 'KCD', 'KG', 'KK', 'KM',
+    'KMOL', 'M', 'MA', 'MCD', 'MG', 'MK', 'MM', 'MMOL', 'MOL', 'Mcd', 'Mg',
+    'Mm', 'Mmol', 'Ms', 'NA', 'NG', 'NK', 'NM', 'NMOL', 'PA', 'PCD', 'PG',
+    'PK', 'PM', 'PMOL', 'Pcd', 'Pg', 'Pm', 'Pmol', 'Ps', 'TA', 'TCD', 'TG',
+    'TK', 'TM', 'TMOL', 'Tcd', 'Tg', 'Tm', 'Tmol', 'Ts', 'UA', 'UCD', 'UG',
+    'UK', 'UM', 'UMOL', 'YA', 'YCD', 'YG', 'YK', 'YM', 'YMOL', 'Ycd', 'Yg',
+    'Ym', 'Ymol', 'Ys', 'ZA', 'ZCD', 'ZG', 'ZK', 'ZM', 'ZMOL', 'Zcd', 'Zg',
+    'Zm', 'Zmol', 'Zs', 'aA', 'aK', 'acd', 'ag', 'am', 'amol', 'cA', 'cK',
+    'ccd', 'cd', 'cg', 'cm', 'cmol', 'cs', 'dA', 'dK', 'daA', 'daK', 'dacd',
+    'dag', 'dam', 'damol', 'das', 'dcd', 'dg', 'dm', 'dmol', 'ds', 'fA', 'fK',
+    'fcd', 'fg', 'fm', 'fmol', 'fs', 'g', 'hA', 'hK', 'hcd', 'hg', 'hm',
+    'hmol', 'hs', 'kA', 'kK', 'kcd', 'kg', 'km', 'kmol', 'ks', 'm', 'mA',
+    'mK', 'mcd', 'mg', 'mm', 'mmol', 'mol', 'ms', 'nA', 'nK', 'ncd', 'ng',
+    'nm', 'nmol', 'ns', 'pA', 'pK', 'pcd', 'pg', 'pm', 'pmol', 'ps', 's',
+    'uA', 'uK', 'ucd', 'ug', 'um', 'umol', 'us', 'yA', 'yK', 'ycd', 'yg',
+    'ym', 'ymol', 'ys', 'zA', 'zK', 'zcd', 'zg', 'zm', 'zmol', 'zs',
 ]
 
 m = M = new_unit("m", 0, "meter")
@@ -33,14 +39,14 @@ Mm = MM = new_unit("Mm", 10 ** 6 * m, "megameter")
 km = KM = new_unit("km", 10 ** 3 * m, "kilometer")
 hm = HM = new_unit("hm", 10 ** 2 * m, "hectometer")
 dam = DAM = new_unit("dam", 10 ** 1 * m, "decameter")
-ym = YM = new_unit("ym", 10 ** -24 * m, "yoctometer")
-zm = ZM = new_unit("zm", 10 ** -21 * m, "zeptometer")
+ym = new_unit("ym", 10 ** -24 * m, "yoctometer")
+zm = new_unit("zm", 10 ** -21 * m, "zeptometer")
 am = AM = new_unit("am", 10 ** -18 * m, "attometer")
 fm = FM = new_unit("fm", 10 ** -15 * m, "femtometer")
-pm = PM = new_unit("pm", 10 ** -12 * m, "picometer")
+pm = new_unit("pm", 10 ** -12 * m, "picometer")
 nm = NM = new_unit("nm", 10 ** -9 * m, "nanometer")
 um = UM = new_unit("um", 10 ** -6 * m, "micrometer")
-mm = MM = new_unit("mm", 10 ** -3 * m, "millimeter")
+mm = new_unit("mm", 10 ** -3 * m, "millimeter")
 cm = CM = new_unit("cm", 10 ** -2 * m, "centimeter")
 dm = DM = new_unit("dm", 10 ** -1 * m, "decimeter")
 
@@ -58,7 +64,7 @@ hs = new_unit("hs", 10 ** 2 * s, "hectosecond")
 das = new_unit("das", 10 ** 1 * s, "decasecond")
 ys = new_unit("ys", 10 ** -24 * s, "yoctosecond")
 zs = new_unit("zs", 10 ** -21 * s, "zeptosecond")
-#as = unit("as", 10**-18 * s, "attosecond") # as is a reserved word
+# as = new_unit("as", 10**-18 * s, "attosecond") # as is a reserved word
 fs = new_unit("fs", 10 ** -15 * s, "femtosecond")
 ps = new_unit("ps", 10 ** -12 * s, "picosecond")
 ns = new_unit("ns", 10 ** -9 * s, "nanosecond")
@@ -68,48 +74,48 @@ cs = new_unit("cs", 10 ** -2 * s, "centisecond")
 ds = new_unit("ds", 10 ** -1 * s, "decisecond")
 
 
-A = A = new_unit("A", 0, "ampere")
-YA = YA = new_unit("YA", 10 ** 24 * A, "yottaampere")
-ZA = ZA = new_unit("ZA", 10 ** 21 * A, "zettaampere")
-EA = EA = new_unit("EA", 10 ** 18 * A, "exaampere")
-PA = PA = new_unit("PA", 10 ** 15 * A, "petaampere")
-TA = TA = new_unit("TA", 10 ** 12 * A, "teraampere")
-GA = GA = new_unit("GA", 10 ** 9 * A, "gigaampere")
-MA = MA = new_unit("MA", 10 ** 6 * A, "megaampere")
+A = new_unit("A", 0, "ampere")
+YA = new_unit("YA", 10 ** 24 * A, "yottaampere")
+ZA = new_unit("ZA", 10 ** 21 * A, "zettaampere")
+EA = new_unit("EA", 10 ** 18 * A, "exaampere")
+PA = new_unit("PA", 10 ** 15 * A, "petaampere")
+TA = new_unit("TA", 10 ** 12 * A, "teraampere")
+GA = new_unit("GA", 10 ** 9 * A, "gigaampere")
+MA = new_unit("MA", 10 ** 6 * A, "megaampere")
 kA = KA = new_unit("kA", 10 ** 3 * A, "kiloampere")
 hA = HA = new_unit("hA", 10 ** 2 * A, "hectoampere")
 daA = DAA = new_unit("daA", 10 ** 1 * A, "decaampere")
-yA = YA = new_unit("yA", 10 ** -24 * A, "yoctoampere")
-zA = ZA = new_unit("zA", 10 ** -21 * A, "zeptoampere")
+yA = new_unit("yA", 10 ** -24 * A, "yoctoampere")
+zA = new_unit("zA", 10 ** -21 * A, "zeptoampere")
 aA = AA = new_unit("aA", 10 ** -18 * A, "attoampere")
 fA = FA = new_unit("fA", 10 ** -15 * A, "femtoampere")
-pA = PA = new_unit("pA", 10 ** -12 * A, "picoampere")
+pA = new_unit("pA", 10 ** -12 * A, "picoampere")
 nA = NA = new_unit("nA", 10 ** -9 * A, "nanoampere")
 uA = UA = new_unit("uA", 10 ** -6 * A, "microampere")
-mA = MA = new_unit("mA", 10 ** -3 * A, "milliampere")
+mA = new_unit("mA", 10 ** -3 * A, "milliampere")
 cA = CA = new_unit("cA", 10 ** -2 * A, "centiampere")
 dA = DA = new_unit("dA", 10 ** -1 * A, "deciampere")
 
 
-K = K = new_unit("K", 0, "kelvin")
-YK = YK = new_unit("YK", 10 ** 24 * K, "yottakelvin")
-ZK = ZK = new_unit("ZK", 10 ** 21 * K, "zettakelvin")
-EK = EK = new_unit("EK", 10 ** 18 * K, "exakelvin")
-PK = PK = new_unit("PK", 10 ** 15 * K, "petakelvin")
-TK = TK = new_unit("TK", 10 ** 12 * K, "terakelvin")
-GK = GK = new_unit("GK", 10 ** 9 * K, "gigakelvin")
-MK = MK = new_unit("MK", 10 ** 6 * K, "megakelvin")
+K = new_unit("K", 0, "kelvin")
+YK = new_unit("YK", 10 ** 24 * K, "yottakelvin")
+ZK = new_unit("ZK", 10 ** 21 * K, "zettakelvin")
+EK = new_unit("EK", 10 ** 18 * K, "exakelvin")
+PK = new_unit("PK", 10 ** 15 * K, "petakelvin")
+TK = new_unit("TK", 10 ** 12 * K, "terakelvin")
+GK = new_unit("GK", 10 ** 9 * K, "gigakelvin")
+MK = new_unit("MK", 10 ** 6 * K, "megakelvin")
 kK = KK = new_unit("kK", 10 ** 3 * K, "kilokelvin")
 hK = HK = new_unit("hK", 10 ** 2 * K, "hectokelvin")
 daK = DAK = new_unit("daK", 10 ** 1 * K, "decakelvin")
-yK = YK = new_unit("yK", 10 ** -24 * K, "yoctokelvin")
-zK = ZK = new_unit("zK", 10 ** -21 * K, "zeptokelvin")
+yK = new_unit("yK", 10 ** -24 * K, "yoctokelvin")
+zK = new_unit("zK", 10 ** -21 * K, "zeptokelvin")
 aK = AK = new_unit("aK", 10 ** -18 * K, "attokelvin")
 fK = FK = new_unit("fK", 10 ** -15 * K, "femtokelvin")
-pK = PK = new_unit("pK", 10 ** -12 * K, "picokelvin")
+pK = new_unit("pK", 10 ** -12 * K, "picokelvin")
 nK = NK = new_unit("nK", 10 ** -9 * K, "nanokelvin")
 uK = UK = new_unit("uK", 10 ** -6 * K, "microkelvin")
-mK = MK = new_unit("mK", 10 ** -3 * K, "millikelvin")
+mK = new_unit("mK", 10 ** -3 * K, "millikelvin")
 cK = CK = new_unit("cK", 10 ** -2 * K, "centikelvin")
 dK = DK = new_unit("dK", 10 ** -1 * K, "decikelvin")
 
@@ -125,14 +131,14 @@ Mmol = MMOL = new_unit("Mmol", 10 ** 6 * mol, "megamole")
 kmol = KMOL = new_unit("kmol", 10 ** 3 * mol, "kilomole")
 hmol = HMOL = new_unit("hmol", 10 ** 2 * mol, "hectomole")
 damol = DAMOL = new_unit("damol", 10 ** 1 * mol, "decamole")
-ymol = YMOL = new_unit("ymol", 10 ** -24 * mol, "yoctomole")
-zmol = ZMOL = new_unit("zmol", 10 ** -21 * mol, "zeptomole")
+ymol = new_unit("ymol", 10 ** -24 * mol, "yoctomole")
+zmol = new_unit("zmol", 10 ** -21 * mol, "zeptomole")
 amol = AMOL = new_unit("amol", 10 ** -18 * mol, "attomole")
 fmol = FMOL = new_unit("fmol", 10 ** -15 * mol, "femtomole")
-pmol = PMOL = new_unit("pmol", 10 ** -12 * mol, "picomole")
+pmol = new_unit("pmol", 10 ** -12 * mol, "picomole")
 nmol = NMOL = new_unit("nmol", 10 ** -9 * mol, "nanomole")
 umol = UMOL = new_unit("umol", 10 ** -6 * mol, "micromole")
-mmol = MMOL = new_unit("mmol", 10 ** -3 * mol, "millimole")
+mmol = new_unit("mmol", 10 ** -3 * mol, "millimole")
 cmol = CMOL = new_unit("cmol", 10 ** -2 * mol, "centimole")
 dmol = DMOL = new_unit("dmol", 10 ** -1 * mol, "decimole")
 
@@ -148,14 +154,14 @@ Mcd = MCD = new_unit("Mcd", 10 ** 6 * cd, "megacandela")
 kcd = KCD = new_unit("kcd", 10 ** 3 * cd, "kilocandela")
 hcd = HCD = new_unit("hcd", 10 ** 2 * cd, "hectocandela")
 dacd = DACD = new_unit("dacd", 10 ** 1 * cd, "decacandela")
-ycd = YCD = new_unit("ycd", 10 ** -24 * cd, "yoctocandela")
-zcd = ZCD = new_unit("zcd", 10 ** -21 * cd, "zeptocandela")
+ycd = new_unit("ycd", 10 ** -24 * cd, "yoctocandela")
+zcd = new_unit("zcd", 10 ** -21 * cd, "zeptocandela")
 acd = ACD = new_unit("acd", 10 ** -18 * cd, "attocandela")
 fcd = FCD = new_unit("fcd", 10 ** -15 * cd, "femtocandela")
-pcd = PCD = new_unit("pcd", 10 ** -12 * cd, "picocandela")
+pcd = new_unit("pcd", 10 ** -12 * cd, "picocandela")
 ncd = NCD = new_unit("ncd", 10 ** -9 * cd, "nanocandela")
 ucd = UCD = new_unit("ucd", 10 ** -6 * cd, "microcandela")
-mcd = MCD = new_unit("mcd", 10 ** -3 * cd, "millicandela")
+mcd = new_unit("mcd", 10 ** -3 * cd, "millicandela")
 ccd = CCD = new_unit("ccd", 10 ** -2 * cd, "centicandela")
 dcd = DCD = new_unit("dcd", 10 ** -1 * cd, "decicandela")
 
@@ -170,14 +176,14 @@ Gg = GG = new_unit("Gg", 10 ** 6 * kg, "gigagram")
 Mg = MG = new_unit("Mg", 10 ** 3 * kg, "megagram")
 hg = HG = new_unit("hg", 10 ** -1 * kg, "hectogram")
 dag = DAG = new_unit("dag", 10 ** -2 * kg, "decagram")
-yg = YG = new_unit("yg", 10 ** -27 * kg, "yoctogram")
-zg = ZG = new_unit("zg", 10 ** -24 * kg, "zeptogram")
+yg = new_unit("yg", 10 ** -27 * kg, "yoctogram")
+zg = new_unit("zg", 10 ** -24 * kg, "zeptogram")
 ag = AG = new_unit("ag", 10 ** -21 * kg, "attogram")
 fg = FG = new_unit("fg", 10 ** -18 * kg, "femtogram")
-pg = PG = new_unit("pg", 10 ** -15 * kg, "picogram")
+pg = new_unit("pg", 10 ** -15 * kg, "picogram")
 ng = NG = new_unit("ng", 10 ** -12 * kg, "nanogram")
 ug = UG = new_unit("ug", 10 ** -9 * kg, "microgram")
-mg = MG = new_unit("mg", 10 ** -6 * kg, "milligram")
+mg = new_unit("mg", 10 ** -6 * kg, "milligram")
 cg = CG = new_unit("cg", 10 ** -5 * kg, "centigram")
 dg = DG = new_unit("dg", 10 ** -4 * kg, "decigram")
 g = new_unit("g", 10 ** -3 * kg, "gram")

@@ -9,8 +9,8 @@ Version info
 
   - This repository is cloned from: http://bitbucket.org/kiv/unum/
   - Version is not compatible with previous `unum` (**no backward compatibility**)
-  - Unicode using by default; units exponents are displaying using unicode superscript
-  - New module function allowing using alternatively `float`, `int` or `Unum`  
+  - Uses unicode by default; units exponents are displaying using unicode superscript
+  - New module function allows the use of`float`, `int` or `Unum`  
 
 License
 --------
@@ -20,21 +20,20 @@ Library is distributed under **GNU LGPL** license (see `LICENSE.txt` file)
 Installation
 -------------------------------------------------------------------------
 ### Using pip
-If you have not git yet, install it from https://git-scm.com/downloads
-
+To install directly from the Git repo, install with pip:
 ```{r, engine='bash', count_lines}
-    pip install git+git://github.com/trzemecki/Unum.git
+    pip install git+https://github.com/trzemecki/Unum.git
 ```
 
 ### Alternatively
-unzip Unum installation files to any directory.
+unzip the Unum installation files to any directory and run:
 
 ```{r, engine='bash', count_lines}
     cd <install-directory>
     python setup.py install
 ```
 
-this will install Unum packages in your Python site-packages directory
+This will install Unum packages in your Python site-packages directory
 i.e. it will create the directory `<python-site-packages-dir>`/unum 
 if the installation is successful (see below),
 you can safely remove `<your-install-directory>`
@@ -42,10 +41,13 @@ you can safely remove `<your-install-directory>`
 Introduction
 -------------------------------------------------------------------------
 
-Unum stands for 'unit-numbers'. It is a Python module that allows you to define and manipulate quantities with units attached such as 60 seconds, 500 watts, 42 miles-per-hour, 100 kg per square meter, 14400 bits per second, 30 dollars, and so on. 
+Unum stands for 'unit-numbers'. It is a Python module that allows you to define 
+and manipulate quantities with units attached such as 60 seconds, 500 watts, 
+42 miles-per-hour, 100 kg per square meter, 14400 bits per second, 30 dollars, 
+and so on. 
 
 Features include:
-- Exceptions for incorrect use of units.
+- Exceptions for incorrect use of units (such as adding incompatible units).
 - Automatic and manual conversion between compatible units.
 - Easily extended to arbitrary units.
 - Integration with any type supporting arithmetic operations, including Numpy arrays and standard library types like complex and fractions.Fraction.
@@ -54,7 +56,7 @@ Features include:
 Example
 -------------------------------------------------------------------------
 
-For a simple example, let's can calculate Usain Bolt's average speed during his record-breaking performance in the 2008 Summer Olympics
+For a simple example, let's calculate Usain Bolt's average speed during his record-breaking performance in the 2008 Summer Olympics
 
     >>> from unum.units import * # Load a number of common units.
     >>> distance = 100*m
@@ -94,7 +96,7 @@ Unum will also report errors in attempting to add incompatible units
         raise IncompatibleUnitsError(self, other)
     unum.IncompatibleUnitsError: [s] can't be converted to [kg]
 
-and when units are present in operations that don't expect them, such as the second part of an exponentiation
+and when units are present in operations that don't expect them, such as an exponent
 
     >>> 2 ** (2*m)
     Traceback (most recent call last):
@@ -308,6 +310,21 @@ The string representation of Unums can be configured by modifying the variables 
     >>> M/ANGSTROM
     10000000000.0000000
     >>>
+
+The complete set of keywords (along with their default values) is:
+
+    >>> Unit.set_format(
+    ...     mul_separator='\u00B7',  # Unicode dot
+    ...     div_separator='/',
+    ...     unit_format='[%s]',
+    ...     value_format='%s',
+    ...     name_format='%s',
+    ...     name_for_repr=False,
+    ...     indent=' ',
+    ...     unitless='[-]',
+    ...     auto_norm=True,
+    ...     superscript=True,
+    ...     always_display_number=False)
     
 See the docstrings in the class for more detail.    
   
@@ -324,7 +341,7 @@ This behavior can be controlled by a flag on the Unum class
     >>> Pa * m**2
     1 [Pa.m2]
     
-Then you must manually normalize by calling the normalize method
+Then you must manually normalize by calling the simplify_unit method
 
     >>> x = Pa * m**2
     >>> x
@@ -334,7 +351,7 @@ Then you must manually normalize by calling the normalize method
     >>> x
     1 [N]
     
-Note that normalize permanently modifies the instance itself as a side-effect.
+Note that simplify_unit permanently modifies the instance itself as a side effect.
 
 Running tests
 -------------------------------------------------------------------------
