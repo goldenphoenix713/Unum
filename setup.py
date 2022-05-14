@@ -16,9 +16,6 @@ setup(
         'six',
         'inflect',
     ],
-    test_requires=[
-        'numpy'
-    ],
     extras_require=[
         'numpy'
     ],
