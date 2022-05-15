@@ -6,8 +6,8 @@ def uarray(array_like, *args, **kwargs):
     """
     Convenience function to return a Unum containing a numpy array.
     With current versions of numpy, we have the following undesirable behavior:
-    >>> from unum.units import M
-    >>> array([5,6,7,8]) * M
+    >>> from unum.units import m
+    >>> array([5,6,7,8]) * m
     array([5 [m], 6 [m], 7 [m], 8 [m]], dtype=object)
 
     :param array_like: numpy array
@@ -23,7 +23,7 @@ def uarray(array_like, *args, **kwargs):
 def unitless(*values):
     unit = Unum(1, values[0]._unit)
 
-    return (value.asNumber(unit) for value in values)
+    return (value.number(unit) for value in values)
 
 
 def is_unit(value):
